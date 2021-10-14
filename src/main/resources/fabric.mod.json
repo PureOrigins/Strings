@@ -3,7 +3,7 @@
     "id":"strings",
     "version":"${version}",
     "name":"Strings",
-    "description":"Replaces server strings",
+    "description":"Overrides server strings",
     "authors":[
         "AgeOfWar"
     ],
