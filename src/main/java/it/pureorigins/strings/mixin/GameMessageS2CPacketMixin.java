@@ -1,10 +1,12 @@
 package it.pureorigins.strings.mixin;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import it.pureorigins.strings.Strings;
 import it.pureorigins.framework.configuration.TemplateKt;
 import net.minecraft.network.MessageType;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.text.Text;
+import net.minecraft.text.Texts;
 import net.minecraft.text.TranslatableText;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,12 +30,12 @@ public class GameMessageS2CPacketMixin {
       var replace = Strings.INSTANCE.getStrings().get(((TranslatableText) message).getKey());
       if (replace != null) {
         var args = ((TranslatableText) message).getArgs();
-        for (var i = 0;i < args.length;i++) {
-          if (args[i] instanceof Text) {
-            args[i] = Text.Serializer.toJsonTree((Text) args[i]);
-          }
+        var text = TemplateKt.templateText(replace, Map.of("args", args), Locale.ROOT);
+        try {
+          this.message = Texts.parse(Strings.INSTANCE.getCommandSource(), text, null, 0);
+        } catch (CommandSyntaxException e) {
+          this.message = text;
         }
-        this.message = TemplateKt.templateText(replace, Map.of("args", args), Locale.ROOT);
       }
     }
   }

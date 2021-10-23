@@ -13,7 +13,7 @@
         "sources":"https://github.com/PureOrigins/Strings"
     },
     "license":"Proprietary",
-    "icon":"assets/chat/icon.png",
+    "icon":"assets/strings/icon.png",
     "environment":"*",
     "entrypoints":{
         "main":[
